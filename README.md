@@ -9,7 +9,7 @@ Create polls in chat.
 This mod was made to hopefully make it easier for the host to ask multiple choice questions in large lobbies, such as what moon to go to.
 
 ## How to use it
-As the host, press `P` to open the Poll Creator menu (key can be rebound), there you can edit the poll settings and add options to the poll, then press the 'Start poll' button.\
+As the host, press `P` or send `/poll` in chat to open the Poll Creator menu, there you can edit the poll settings and add options to the poll, then press the 'Start poll' button.\
 Players can then vote by sending the number of the option they want to vote for in chat.\
 After the poll expires (or if the host ends it manually), the results will be shown in chat.
 

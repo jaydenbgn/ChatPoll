@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Unity.Collections;
 using UnityEngine;
 
 namespace ChatPoll
@@ -46,17 +48,22 @@ namespace ChatPoll
             if (isWindowOpen) return;
             if (InputActions.ShouldInputBeIgnored()) return;
 
-            isWindowOpen = true;
-
-            StartOfRound.Instance.localPlayerController.quickMenuManager.isMenuOpen = true;
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+            SetOpen(true);
         }
 
         private void Update()
         {
-            if (!StartOfRound.Instance.localPlayerController.quickMenuManager.isMenuOpen)
-                isWindowOpen = false;
+            if (isWindowOpen && !StartOfRound.Instance.localPlayerController.quickMenuManager.isMenuOpen)
+                SetOpen(false);
+        }
+
+        internal void SetOpen(bool isVisible)
+        {
+            isWindowOpen = isVisible;
+
+            StartOfRound.Instance.localPlayerController.quickMenuManager.isMenuOpen = isVisible;
+            Cursor.lockState = isVisible ? CursorLockMode.None : CursorLockMode.Locked;
+            Cursor.visible = isVisible;
         }
 
         private void OnGUI()
@@ -64,11 +71,18 @@ namespace ChatPoll
             if (!isWindowOpen)
                 return;
 
-            int x = (Screen.width - WindowWidth) / 2;
-            int y = (Screen.height - WindowHeight) / 2;
+            float scale = Plugin.config.pollCreatorMenu_Scale.Value;
+            if (Plugin.config.pollCreatorMenu_ScaleWithScreenSize.Value)
+                scale *= Math.Min(Screen.width / 1920f, Screen.height / 1080f);
+            int windowX = (Screen.width - WindowWidth) / 2;
+            int windowY = (Screen.height - WindowHeight) / 2;
+            float matrixOffsetX = ((Screen.width * scale) - Screen.width) / -2;
+            float matrixOffsetY = ((Screen.height * scale) - Screen.height) / -2;
+
+            GUI.matrix = Matrix4x4.TRS(new Vector2(matrixOffsetX, matrixOffsetY), Quaternion.identity, Vector3.one * scale);
 
             int controlID = GUIUtility.GetControlID(FocusType.Passive);
-            GUILayout.Window(controlID, new Rect(x, y, WindowWidth, WindowHeight), DrawUI, WindowTitle, WindowOptions);
+            GUILayout.Window(controlID, new Rect(windowX, windowY, WindowWidth, WindowHeight), DrawUI, WindowTitle, WindowOptions);
         }
 
         private void DrawUI(int id)
@@ -116,6 +130,8 @@ namespace ChatPoll
                 if (GUILayout.Button("End poll"))
                 {
                     PollManager.Instance.EndPoll();
+                    if (Plugin.config.pollCreatorMenu_CloseOnEnd.Value)
+                        SetOpen(false);
                 }
             }
             else
@@ -124,6 +140,8 @@ namespace ChatPoll
                 if (GUILayout.Button("Start poll"))
                 {
                     PollManager.Instance.StartPoll(pollTitle, hasDuration ? duration : float.PositiveInfinity, pollOptions.ToArray());
+                    if (Plugin.config.pollCreatorMenu_CloseOnStart.Value)
+                        SetOpen(false);
                 }
             }
             GUI.color = originalColor;

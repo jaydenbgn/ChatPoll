@@ -13,6 +13,8 @@ namespace ChatPoll
 
         internal static PollManager Instance { get; private set; }
 
+        internal PollCreatorUI PollCreatorUI { get; private set; }
+
         internal bool IsPollActive { get; private set; }
         private float timer;
         private string[] options;
@@ -21,6 +23,7 @@ namespace ChatPoll
         private void Awake()
         {
             Instance = this;
+            PollCreatorUI = gameObject.AddComponent<PollCreatorUI>();
         }
 
         private void Start()

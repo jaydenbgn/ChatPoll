@@ -12,9 +12,10 @@ namespace ChatPoll
     {
         public const string GUID = "BGN.ChatPoll";
         public const string NAME = "Chat Poll";
-        public const string VERSION = "1.0.0";
+        public const string VERSION = "1.1.0";
 
         internal static new ManualLogSource Logger;
+        internal static ChatPollConfig config;
 #nullable enable
         internal static readonly InputActions inputActions = new();
 
@@ -25,6 +26,7 @@ namespace ChatPoll
         {
             // Plugin startup logic
             Logger = base.Logger;
+            config = new ChatPollConfig(Config);
 
             Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
 
