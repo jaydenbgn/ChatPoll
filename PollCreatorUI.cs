@@ -57,13 +57,13 @@ namespace ChatPoll
                 SetOpen(false);
         }
 
-        internal void SetOpen(bool isVisible)
+        internal void SetOpen(bool isOpen)
         {
-            isWindowOpen = isVisible;
+            isWindowOpen = isOpen;
 
-            StartOfRound.Instance.localPlayerController.quickMenuManager.isMenuOpen = isVisible;
-            Cursor.lockState = isVisible ? CursorLockMode.None : CursorLockMode.Locked;
-            Cursor.visible = isVisible;
+            StartOfRound.Instance.localPlayerController.quickMenuManager.isMenuOpen = isOpen;
+            Cursor.lockState = isOpen ? CursorLockMode.None : CursorLockMode.Locked;
+            Cursor.visible = isOpen;
         }
 
         private void OnGUI()

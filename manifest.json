@@ -1,6 +1,6 @@
 {
   "name": "ChatPoll",
-  "version_number": "1.1.0",
+  "version_number": "1.2.0",
   "website_url": "https://github.com/jaydenbgn/ChatPoll",
   "description": "Allows the host to start polls in chat that players can vote on.",
   "dependencies": [

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using UnityEngine;
@@ -11,14 +13,17 @@ namespace ChatPoll
         private const string SecondaryTextColorCode = "yellow";
         private const string TertiaryTextColorCode = "white";
 
-        internal static PollManager Instance { get; private set; }
+        public static PollManager Instance { get; private set; }
 
         internal PollCreatorUI PollCreatorUI { get; private set; }
 
-        internal bool IsPollActive { get; private set; }
+        public bool IsPollActive { get; private set; }
         private float timer;
-        private string[] options;
+        private string[] options = [];
         private readonly Dictionary<ulong, int> votersOptions = new();
+
+        public IReadOnlyList<string> Options => options;
+        public int TotalVoteCount => votersOptions.Count;
 
         private void Awake()
         {
@@ -84,6 +89,7 @@ namespace ChatPoll
 
                 // Instructions
                 stringBuilder.AppendLine($"<align=justified><color={SecondaryTextColorCode}>^ Vote by sending the number!</color></align>");
+
                 stringBuilder.Append("<align=flush>╚╝</align>");
             }
             stringBuilder.Append("</color>");
@@ -142,5 +148,23 @@ namespace ChatPoll
             votersOptions[clientId] = optionIndex;
         }
 
+        internal bool TryGetVote(ulong clientId, [NotNullWhen(true)] out int? optionIndex)
+        {
+            if (votersOptions.TryGetValue(clientId, out int i))
+            {
+                optionIndex = i;
+                return true;
+            }
+            else
+            {
+                optionIndex = null;
+                return false;
+            }
+        }
+
+        internal void RemoveVote(ulong clientId)
+        {
+            votersOptions.Remove(clientId);
+        }
     }
 }

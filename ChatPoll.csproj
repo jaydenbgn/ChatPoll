@@ -4,7 +4,7 @@
         <TargetFramework>netstandard2.1</TargetFramework>
         <AssemblyName>ChatPoll</AssemblyName>
         <Description>A mod for Lethal Company that allows the host to start polls in chat that players can vote on</Description>
-        <Version>1.1.0</Version>
+        <Version>1.2.0</Version>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <LangVersion>latest</LangVersion>
     </PropertyGroup>

@@ -12,7 +12,7 @@ namespace ChatPoll
     {
         public const string GUID = "BGN.ChatPoll";
         public const string NAME = "Chat Poll";
-        public const string VERSION = "1.1.0";
+        public const string VERSION = "1.2.0";
 
         internal static new ManualLogSource Logger;
         internal static ChatPollConfig config;
